@@ -42,6 +42,29 @@ public extension UIWindow {
             completion?()
         })
     }
+    
+    /// SwifterSwift: return the last ViewController in the window .
+    
+     func topViewController() -> UIViewController? {
+        
+        guard var topController = self.rootViewController else {
+            return nil
+        }
+        while let presentedViewController = topController.presentedViewController {
+            topController = presentedViewController
+        }
+        guard let navigation = topController as? UINavigationController, navigation.viewControllers.count > 0 else {
+            return topController
+        }
+        
+        topController = navigation.viewControllers.last ?? navigation
+        
+        while let lastPresintedViewController = navigation.viewControllers.last?.presentedViewController {
+            topController = lastPresintedViewController
+        }
+        
+        return topController
+    }
 
 }
 #endif
